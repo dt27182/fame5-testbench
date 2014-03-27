@@ -31,7 +31,7 @@ vclibdir = $(UCB_VLSI_HOME)/install/vclib
 
 srcdir = $(basedir)/generated-src
 vsrcs = \
-	$(srcdir)/Hello.v \
+	$(srcdir)/FSM.v \
 
 #--------------------------------------------------------------------
 # Build rules
@@ -49,7 +49,7 @@ $(vcs_sim) : Makefile $(vsrcs)
 	$(VCS) $(VCS_OPTS) +incdir+$(srcdir) -o $(vcs_sim) \
 	       +define+CLOCK_PERIOD=$(vcs_clock_period) \
 	        $(vsrcs)
-$(srcdir)/Hello.v:
+$(srcdir)/FSM.v:
 	cd ../../.. && sbt "project cpu" "run -vbuild --targetDir vlsi/build/generated-src"
 	
 #--------------------------------------------------------------------

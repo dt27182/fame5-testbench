@@ -1,4 +1,4 @@
-package Hello 
+package FSM 
  
 import Chisel._
 
