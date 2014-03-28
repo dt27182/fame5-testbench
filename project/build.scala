@@ -5,5 +5,6 @@ import Keys._
 
 object BuildSettings extends Build {
   lazy val chisel = Project("chisel", file("chisel"))
-  lazy val cpu = Project("cpu", file("src")).dependsOn(chisel)
+  lazy val fsm = Project("fsm", file("src/fsm")).dependsOn(chisel)
+  lazy val cpu = Project("cpu", file("src/cpu")).dependsOn(chisel)
 }

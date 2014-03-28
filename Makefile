@@ -1,6 +1,6 @@
 run:
-	sbt "project cpu" "run -ctest --autoPipe --targetDir emulator"
-	vcd2vpd Hello.vcd Hello.vcd.vpd
+	sbt "project fsm" "run --backend Chisel.Fame5CppBackend --genHarness --compile --test --vcd --debug --targetDir emulator"
+	vcd2vpd FSM.vcd FSM.vcd.vpd
 clean:
 	sbt "project chisel" clean
 	sbt "project cpu" clean

@@ -1,4 +1,4 @@
-package FSM 
+package Cpu 
  
 import Chisel._
 

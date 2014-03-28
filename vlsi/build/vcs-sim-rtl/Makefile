@@ -32,6 +32,8 @@ vclibdir = $(UCB_VLSI_HOME)/install/vclib
 srcdir = $(basedir)/generated-src
 vsrcs = \
 	$(srcdir)/FSM.v \
+#	$(srcdir)/Cpu.v \
+
 
 #--------------------------------------------------------------------
 # Build rules
@@ -50,6 +52,8 @@ $(vcs_sim) : Makefile $(vsrcs)
 	       +define+CLOCK_PERIOD=$(vcs_clock_period) \
 	        $(vsrcs)
 $(srcdir)/FSM.v:
+	cd ../../.. && sbt "project fsm" "run -vbuild --targetDir vlsi/build/generated-src"
+$(srcdir)/Cpu.v:
 	cd ../../.. && sbt "project cpu" "run -vbuild --targetDir vlsi/build/generated-src"
 	
 #--------------------------------------------------------------------
@@ -79,3 +83,5 @@ junk += simv* csrc *.vpd *.key DVE* .vcs* timestamp
 
 clean :
 	rm -rf $(junk) *~ \#* *.log *.cmd *.daidir
+	rm -f ../generated-src/*.v
+ 

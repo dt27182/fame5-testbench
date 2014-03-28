@@ -5,5 +5,7 @@ emulator/target/*
 target/*
 *.vcd
 target/*
-example/target/*
+src/*/target/*
 generated/*
+vlsi/build/generated-src/*
+project/target
