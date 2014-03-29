@@ -1,6 +1,11 @@
 run:
 	sbt "project fsm" "run --backend Chisel.Fame5CppBackend --genHarness --compile --test --vcd --debug --targetDir emulator"
 	vcd2vpd FSM.vcd FSM.vcd.vpd
+
+run-fame1:
+	sbt "project fsm" "run --backend Chisel.Fame1CppBackend --genHarness --compile --test --vcd --debug --targetDir emulator"
+	vcd2vpd FSM.vcd FSM.vcd.vpd
+
 clean:
 	sbt "project chisel" clean
 	sbt "project cpu" clean

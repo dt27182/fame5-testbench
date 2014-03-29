@@ -9,3 +9,4 @@ src/*/target/*
 generated/*
 vlsi/build/generated-src/*
 project/target
+*.swp

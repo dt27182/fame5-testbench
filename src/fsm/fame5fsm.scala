@@ -2,27 +2,46 @@ package FSM
  
 import Chisel._ 
 import scala.collection.mutable.HashMap
+
+class Accumulator extends Module {
+  val io = new Bundle {
+    val currentVal = UInt(OUTPUT)
+    val incrementVal = UInt(INPUT)
+    val incrementEn = Bool(INPUT)
+  }
+  val accumulator = Reg(init = UInt(0))
+  when(io.incrementEn){
+    accumulator := accumulator + io.incrementVal
+  }
+  io.currentVal := accumulator
+}
+
 class FSMDUT extends Module {
   val io = new Bundle {
     val in = new DecoupledIO(UInt(width = 32)).flip
     val out = new DecoupledIO(UInt(width = 32))  
+    val state = UInt(OUTPUT)
   }
-  val accumulator = Reg(init = UInt(0))
+  val accumulator = Module(new Accumulator)
   val takeInput :: sendOutput :: Nil = Enum(UInt(), 2)
   val currentState = Reg(init = takeInput)
-  
+  io.state := currentState
+
   io.in.ready := Bool(false)
   io.out.valid := Bool(false)
   io.out.bits := UInt(0)
+  accumulator.io.incrementVal := UInt(0)
+  accumulator.io.incrementEn := Bool(false)
   when(currentState === takeInput){
     io.in.ready := Bool(true)
     when(io.in.valid){
-      accumulator := accumulator + io.in.bits
+      accumulator.io.incrementVal := io.in.bits
+      accumulator.io.incrementEn := Bool(true)
       currentState := sendOutput
     }
   }.elsewhen(currentState === sendOutput){
     io.out.valid := Bool(true)
-    io.out.bits := accumulator
+    io.out.bits := accumulator.io.currentVal
     when(io.out.ready){
       currentState := takeInput
     }
@@ -226,6 +245,7 @@ class FSM extends Module {
   io.failed := Tester.io.failed
 }*/
 
+
 class FSM extends Module {
   val io = new Bundle{
     val passed = Bool(OUTPUT)
@@ -259,8 +279,8 @@ class FSMTests(c: FSM) extends Tester(c) {
   var done = false
   while(!done){
     expect(c.io.failed, 0)
-    peek(c.Tester0.io.passed)
-    peek(c.Tester1.io.passed)
+    //peek(c.Tester0.io.passed)
+    //peek(c.Tester1.io.passed)
     if(peek(c.io.passed) == 1){
       done = true
     }
